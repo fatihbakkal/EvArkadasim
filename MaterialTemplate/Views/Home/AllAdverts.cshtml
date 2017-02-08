@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewBag.Title = "AllAdverts";
+    string layout = "";
+    if (Session["User"] != null) { layout = "~/Views/Shared/UserLayout.cshtml"; }
+    else { layout = "~/Views/Shared/Layout.cshtml"; }
+
+    Layout = layout;
+}
+<link href="~/Content/css/nouislider.css" rel="stylesheet" />
+<script src="~/Content/js/nouislider.js"></script>
+<script src="~/Content/js/wNumb.js"></script>
+
+@using PagedList.Mvc
+@model MaterialTemplate.Models.SearchModel
+
+<div class="row">
+    @using (Html.BeginForm("AllAdverts", "Home", FormMethod.Get))
+    {
+        <div class="col l12 m12 s12">
+            <div class="card-panel teal lighten-5">
+                <div class="row">
+                    <div class="input-field col l4 m4 s10 offset-s1">
+                        @Html.DropDownListFor(m => m.ProvinceID, new SelectList(ViewBag.Province, "ProvinceID", "Province_Name"), "Seçiniz", new { @onchange = "GetDistricts()" })
+                        <label for="Advert_Type">İl</label>
+                    </div>
+                    <div class="input-field col l4 m4 s10 offset-s1">
+                        @Html.DropDownListFor(m => m.DistrictID, new SelectList(Enumerable.Empty<SelectListItem>(), "DistrictID", "District_Name"), "Seçiniz")
+                        <label for="Advert_Type">İlçe</label>
+                    </div>
+                    <div class="input-field col l4 m4 s10 offset-s1">
+                        @Html.DropDownListFor(m => m.CategoryID, new SelectList(ViewBag.Categories, "PropertyID", "Property_Title"), "Seçiniz")
+                        <label for="Advert_Type">Kategori</label>
+                    </div>
+                    <div class="input-field col l4 offset-l4 m4 s10 offset-s1 center">
+                        <div id="slider" class="center"></div>
+                    </div>
+                    <div class="input-field col l12  m12 s10 offset-s1 center">
+                        <span class="label-fix" style="color:#9e9e9e;">Fiyat Aralığı: </span>
+                        <span id="searchValue" class="text-fix"></span>
+                    </div>
+                    <div class="input-field col l4 m4 s10 offset-s1">
+                        @Html.HiddenFor(m => m.MinPrice)
+                        @Html.HiddenFor(m => m.MaxPrice)
+                    </div>
+                    <div class="input-field col l12 m12 s10 offset-s1 center">
+                        <button type="submit" class="btn waves-effect waves-light" name="SearchButton" value="Search">Ara</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @Html.HiddenFor(m => m.DistrictID, new { @id = "hiddenDistrictID" })
+</div>
+
+<script>
+    var min = $('#MinPrice').val();
+    var max = $('#MaxPrice').val();
+
+
+    $(function () {
+        var slider = document.getElementById('slider');
+
+        noUiSlider.create(slider, {
+            start: [parseInt(min), parseInt(max)],
+            margin: 50,
+            step: 50,
+            direction: 'ltr',
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 3000
+            },
+            format: wNumb({
+                decimals: 0
+            })
+        });
+
+        slider.noUiSlider.on('update', function (values, handle) {
+            $('#MinPrice').val(values[0]);
+            $('#MaxPrice').val(values[1]);
+
+            $('#searchValue').html(values[0] + "TL - " + values[1] + "TL");
+
+
+        });
+    });
+</script>
+
+<div class="row">
+    @foreach (var item in Model.SearchResults)
+    {
+    <div class="col s12 m6 l4">
+        <div class="card teal lighten-5">
+            <div class="card-content" style="height:250px;">
+                <h5 class="blue-text text-darken-4 text-accent-3 line-clamp-2" style="font-size:17px;font-weight:bold;">
+                    <a href="@Url.Action("AdvertDetail","Home",new { advertId = item.AdvertID })">@item.Advert_Title</a>
+                </h5>
+                <hr />
+                <table>
+                    <tr>
+                        <td>
+                            <strong><span>@item.Province.Province_Name / @item.District.District_Name</span></strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @if (item.Advert_Bed != null)
+                                {
+                            <img src="~/Content/img/icon_bed1.png" />
+                            <span>@item.Advert_Bed</span>
+                                }
+
+                            @if (item.Advert_Bath != null)
+                                {
+                            <img src="~/Content/img/icon_bath1.png" />
+                            <span>@item.Advert_Bath</span>
+                                }
+
+                            @if (item.Advert_Field != null)
+                                {
+                            <img src="~/Content/img/icon-size1.png" />
+                            <span>@item.Advert_Field m<sup>2</sup></span>
+                                }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="line-clamp-4">@item.Advert_Describe</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="card-action ca-fix">
+                <span class="list-price"><strong>@item.Advert_Price ₺</strong></span>
+                <a class="deep-orange-text detail" href="@Url.Action("AdvertDetail","Home",new { advertId=item.AdvertID })">Detay</a>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+<div class="row">
+    <div class="col l12 m12 s12 center">
+        @Html.PagedListPager(Model.SearchResults,
+          page => Url.Action("AllAdverts", new RouteValueDictionary()
+          {
+               { "Page", page },
+               { "ProvinceID", Model.ProvinceID },
+               { "DistrictID", Model.DistrictID },
+               { "CategoryID", Model.CategoryID },
+               { "MaxPrice", Model.MaxPrice},
+               {"MinPrice", Model.MinPrice }
+          }),
+          PagedListRenderOptions.PageNumbersOnly)
+    </div>
+</div>
+
+<script>
+    $('.chips').material_chip();
+
+    $(document).ready(function () {
+        $('select').material_select();
+        if ($("#ProvinceID").val() == "") {
+            $("#DistrictID").prop("disabled", true);
+            $("#DistrictID").material_select('update');
+        }
+        else if ($("#ProvinceID").val() != "") {
+            GetDistricts();
+        }
+    });
+
+    function GetDistricts() {
+        var provinceId = $('#ProvinceID').val();
+        if (provinceId == "") {
+            $("#DistrictID").html("");
+            $("#DistrictID").append($('<option></option>')
+                            .val("")
+                            .html("İl Seçiniz")
+                            .prop("disabled", true)
+                            .material_select('update'));
+        }
+        else {
+            $.ajax({
+                url: "@Url.Action("GetDistrictsById", "Home")",
+                type: "GET",
+                dataType: "JSON",
+                data: { province: provinceId, search: 1 },
+                success: function (districts) {
+                    $("#DistrictID").html("");
+                    $("#DistrictID").append($('<option></option>').val("").html("Seçiniz"));
+                    $.each(districts, function (i, district) {
+                        $("#DistrictID").append(
+                        $('<option></option>').val(district.DistrictID).html(district.District_Name));
+                    });
+                    $("#DistrictID").prop("disabled", false);
+                    $("#DistrictID").val($('#hiddenDistrictID').val());
+                    $("#DistrictID").material_select('update');
+                }
+            });
+        }
+
+    }
+</script>
+
+<style>
+    td, th {
+        padding: 5px 10px;
+    }
+</style>

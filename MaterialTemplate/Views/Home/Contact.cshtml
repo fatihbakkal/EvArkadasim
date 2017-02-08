@@ -1,0 +1,43 @@
+﻿
+@{
+    ViewBag.Title = "Contact";
+    string layout = "";
+    if (Session["User"] != null) { layout = "~/Views/Shared/UserLayout.cshtml"; }
+    else { layout = "~/Views/Shared/Layout.cshtml"; }
+
+    Layout = layout;
+}
+
+<script src="~/Content/js/nouislider.min.js"></script>
+<link href="~/Content/css/nouislider.min.css" rel="stylesheet" />
+<script src="~/Content/js/wNumb.js"></script>
+
+<div class="row">
+    <div class="col l12 m12 s12">
+        <form>
+            <div class="range-input">
+                <div id="slider"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var slider = document.getElementById('slider');
+
+        noUiSlider.create(slider, {
+            start: [0, 100],
+            tooltips: true,
+            direction: 'ltr',
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 100
+            },
+            format: wNumb({
+                decimals: 0
+            })
+        });
+    });
+</script>

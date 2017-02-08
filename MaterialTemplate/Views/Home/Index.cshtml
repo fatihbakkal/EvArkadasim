@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    string layout = "";
+    if (Session["User"] != null) { layout = "~/Views/Shared/UserLayout.cshtml"; }
+    else { layout = "~/Views/Shared/Layout.cshtml"; }
+
+    Layout = layout;
+}
+@using PagedList
+@using PagedList.Mvc
+@model IPagedList<MaterialTemplate.Models.Advert>
+
+<style>
+    td, th {
+        padding: 5px 10px;
+    }
+</style>
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col s12 m6 l4">
+            <div class="card teal lighten-5">
+                <div class="card-content" style="height:250px;">
+                    <h5 class="blue-text text-darken-4 text-accent-3 line-clamp-2" style="font-size:17px;font-weight:bold;">
+                        <a href="@Url.Action("AdvertDetail","Home",new { advertId=item.AdvertID })">@item.Advert_Title</a>
+                    </h5>
+                    <hr />
+                    <table>
+                        <tr>
+                            <td>
+                                <strong><span>@item.Province.Province_Name / @item.District.District_Name</span></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @if (item.Advert_Bed != null)
+                                {
+                                    <img src="~/Content/img/icon_bed1.png" />
+                                        <span>@item.Advert_Bed</span>
+                                }
+
+                                @if (item.Advert_Bath != null)
+                                {
+                                    <img src="~/Content/img/icon_bath1.png" />
+                                        <span>@item.Advert_Bath</span>
+                                }
+
+                                @if (item.Advert_Field != null)
+                                {
+                                    <img src="~/Content/img/icon-size1.png" />
+                                        <span>@item.Advert_Field m<sup>2</sup></span>
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="line-clamp-4">@item.Advert_Describe</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-action ca-fix">
+                    <span class="list-price"><strong>@item.Advert_Price ₺</strong></span>
+                    <a class="deep-orange-text detail" href="@Url.Action("AdvertDetail","Home",new { advertId=item.AdvertID })">Detay</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="row">
+    <div class="col l12 m12 s12 center">
+        @Html.PagedListPager(Model, page => Url.Action("Index", "Home", new { pageNum = page }))
+    </div>
+</div>
+
+@*<script>
+        function replaceText() {
+            $('.describe').each(function () {
+                var currentElement = $(this);
+
+                var value = currentElement.text();
+
+                $(this).text($(this).text().split(/\s+/).slice(0, 15).join(' '))
+            });
+        }
+        $(document).ready(replaceText);
+    </script>*@

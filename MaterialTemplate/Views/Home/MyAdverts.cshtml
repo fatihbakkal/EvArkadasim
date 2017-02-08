@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "MyAdverts";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+@model MaterialTemplate.Models.User
+
+<div class="row">
+    @Html.Partial("PartialLeftMenu")
+    <div class="col l9 s12">
+        <div class="card-panel teal lighten-5">
+            <h5 class="card-header purple-text">İlanlarım</h5>
+            <div class="row">
+                <table>
+                    <thead>
+                        <tr>
+                            <td colspan="1" width="75%">
+                                İlan Başlığı
+                            </td>
+                            <td colspan="1" width="20%">
+                                İlan Tarihi
+                            </td>
+                            <td colspan="1" width="5%">
+                                İşlemler
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Advert)
+                        {
+                            <tr class="table-row" id="@item.AdvertID">
+                                <td>
+                                    <span class="text-fix line-clamp-1">@item.Advert_Title</span>
+                                </td>
+                                <td>
+                                    <span class="text-fix">@item.DT_CREATED.ToString("dd MMMM yyyy")</span>
+                                </td>
+                                <td>
+                                    <a href="#modal1" onclick="getAdverId(@item.AdvertID)" class="secondary-content modal-trigger" title="Kaldır"><i class="material-icons prefix">delete</i></a>
+                                    <a href="@Url.Action("EditAd", "Home", new { advertId = item.AdvertID })" class="secondary-content" title="Düzenle"><i class="material-icons prefix">mode_edit</i></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var advertId = 0;
+
+    function getAdverId(id) {
+        advertId = id;
+    }
+
+    $(document).ready(function () {
+        $('.modal').modal();
+
+        $('#btnDelete').on('click', function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: "@Url.Action("DeleteAd", "Home")",
+                type: "POST",
+                data: { advertId: advertId },
+                dataType: 'json',
+                success: function (result) {
+                    if (result.success == true) {
+                        $('#' + advertId).css("display", "none");
+                        Materialize.toast('İlan başarılı bir şekilde silindi.', 2800, 'rounded');
+                        @*setTimeout(function () {
+                            $(location).attr('href', '@Url.Action("MyAdverts","Home")');
+                        }, 3000);*@
+                    }
+                    else {
+
+                    }
+                }
+            });
+        })
+    });
+</script>
+
+
+<div id="modal1" class="modal red lighten-3">
+    <div class="modal-content red-text darken-1 center">
+        <h5>İlan kaldırılsın mı?</h5>
+    </div>
+    <div class="modal-footer red lighten-3 center">
+        <button type="button" id="btnDelete" class="btn modal-close waves-effect red waves-light" style="float:unset;">Kaldır</button>
+        <button type="button" class="btn modal-close waves-effect grey" style="float:unset;">Kapat</button>
+    </div>
+</div>

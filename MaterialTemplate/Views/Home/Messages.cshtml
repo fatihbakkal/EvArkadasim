@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Messages";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+@model MaterialTemplate.Models.Message
+
+<div class="row">
+    @Html.Partial("PartialLeftMenu")
+    <div class="col l9 s12">
+        <div class="card-panel teal lighten-5">
+            <h5 class="card-header purple-text">Mesajlar</h5>
+            <div class="row">
+                <div class="input-field col l6 offset-l3 m6 offset-m3 s12">
+                    @Html.TextBoxFor(m => m.UserReceiver.User_Username)
+                    @Html.ValidationMessageFor(m => m.UserReceiver.User_Username, "", new { @class = "errorImageForm" })
+                    <label for="User_Username">Alıcı Adı</label>
+                </div>
+                <div class="input-field col l6 offset-l3 m6 offset-m3 s12">
+                    @Html.TextBoxFor(m => m.MessageSubject)
+                    @Html.ValidationMessageFor(m => m.MessageSubject, "", new { @class = "errorImageForm" })
+                    <label for="MessageSubject">Konu</label>
+                </div>
+                <div class="input-field col l6 offset-l3 m6 offset-m3 s12">
+                    @Html.TextAreaFor(m => m.MessageContent, new { @class = "materialize-textarea" })
+                    @Html.ValidationMessageFor(m => m.MessageContent, "", new { @class = "errorAdvertForm" })
+                    <label for="MessageContent">Mesaj</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

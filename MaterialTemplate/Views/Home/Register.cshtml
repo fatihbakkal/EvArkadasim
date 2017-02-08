@@ -1,0 +1,91 @@
+﻿
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@model MaterialTemplate.Models.User
+
+<div class="row">
+    @using (Html.BeginForm("RegisterForm", "Home", FormMethod.Post))
+    {
+        <div class="col s12 m12 l6 offset-l3">
+            <div class="card teal lighten-5">
+                <div class="row">
+                    <div class="input-field col l10 offset-l1 s10 offset-s1">
+                        <i class="material-icons prefix">account_circle</i>
+                        @Html.TextBoxFor(m => m.User_Username, new { @class = "validate" })
+                        @Html.ValidationMessageFor(m => m.User_Username, "", new { @class = "errorImageForm" })
+                        <label for="User_Username">Kullanıcı Adı *</label>
+                    </div>
+                    <div class="input-field col l10 offset-l1 s10 offset-s1">
+                        <i class="material-icons prefix">account_circle</i>
+                        @Html.TextBoxFor(m => m.User_Name, new { @class = "validate" })
+                        @Html.ValidationMessageFor(m => m.User_Name, "", new { @class = "errorImageForm" })
+                        <label for="User_Name">Ad *</label>
+                    </div>
+                    <div class="input-field col l10 offset-l1 s10 offset-s1">
+                        <i class="material-icons prefix">account_circle</i>
+                        @Html.TextBoxFor(m => m.User_Surname, new { @class = "validate" })
+                        @Html.ValidationMessageFor(m => m.User_Surname, "", new { @class = "errorImageForm" })
+                        <label for="User_Surname">Soyad *</label>
+                    </div>
+                    <div class="input-field col l10 offset-l1 s10 offset-s1">
+                        <i class="material-icons prefix">email</i>
+                        @Html.TextBoxFor(m => m.User_Mail, new { @class = "validate"})
+                        @Html.ValidationMessageFor(m => m.User_Mail, "", new { @class = "errorImageForm" })
+                        <label for="User_Mail">Email *</label>
+                    </div>
+                    @*<div class="input-field col l10 offset-l1 s12">
+                            <i class="material-icons prefix">wc</i>
+                            @Html.DropDownListFor(m => m.User_Gender, new List<SelectListItem> {
+                           new SelectListItem { Value = "" , Text = "Seçiniz", Selected=true, Disabled=true},
+                           new SelectListItem { Value = "Bay" , Text = "Bay" },
+                           new SelectListItem { Value = "Bayan" , Text = "Bayan" }
+                        }, new { @class = "validate select-dropdown" })
+                            <label>Cinsiyet</label>
+                            @Html.ValidationMessageFor(m => m.User_Gender, "", new { @class = "errorImageForm" })
+                        </div>*@
+                    <div class="input-field col l10 offset-l1 s10 offset-s1">
+                        <i class="material-icons prefix">phone</i>
+                        @Html.TextBoxFor(m => m.User_Phone, new { type = "tel", maxlength = 11 })
+                        @Html.ValidationMessageFor(m => m.User_Phone, "", new { @class = "errorImageForm" })
+                        <label for="User_Phone">Telefon</label>
+                    </div>
+                    <div class="input-field col l10 offset-l1 s10 offset-s1">
+                        <i class="material-icons prefix">perm_contact_calendar</i>
+                        @Html.TextBoxFor(m => m.User_Birthdate, new { @class = "datepicker", type = "date" })
+                        @Html.ValidationMessageFor(m => m.User_Birthdate, "", new { @class = "errorImageForm" })
+                        <label for="User_Birthdate">Doğum Tarihi *</label>
+                    </div>
+                    <div class="input-field col l10 offset-l1 s10 offset-s1">
+                        <i class="material-icons prefix">lock</i>
+                        @Html.TextBoxFor(m => m.User_Password, new { @class = "validate", type = "password" })
+                        @Html.ValidationMessageFor(m => m.User_Password, "", new { @class = "errorImageForm" })
+                        <label for="User_Password">Şifre *</label>
+                    </div>
+                    @if (TempData["error"] != null)
+                    {
+                        <div class="input-field col l10 offset-l1 s10 offset-s1">
+                            <p class="alert alert-danger red lighten-2">
+                                @TempData["error"]
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+            <button type="submit" id="btnSave" class="btn waves-effect waves-light col l4 offset-l4 s6 offset-s3 center">Kaydet</button>
+        </div>
+    }
+</div>
+
+<script>
+    $('.datepicker').pickadate({
+        selectMonths: true,
+        selectYears: 90
+    });
+    $(document).ready(function () {
+        $('select').material_select();
+    });
+</script>
+

@@ -1,0 +1,135 @@
+﻿<html>
+<head>
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <link type="text/css" rel="stylesheet" href="~/Content/css/materialize.min.css" media="screen,projection" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.15.0/jquery.validate.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+    <script type="text/javascript" src="~/Content/js/materialize.min.js"></script>
+
+    <!--Import my scripts-->
+    <!--Import my css-->
+    <link type="text/css" rel="stylesheet" href="~/Content/css/style.css" />
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewBag.Title</title>
+</head>
+<body style="background-image: url(../../Content/img/bg.jpg)">
+    <header>
+        <nav class="light-blue lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a href="@Url.Action("Index","Home")" class="brand-logo"><i class="material-icons">home</i></a>
+                <a href="#" id="left-sidebar" data-activates="nav-mobile" class="button-collapse"><i class="material-icons">menu</i></a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="@Url.Action("AllAdverts","Home")">İlan Ara<i class="material-icons left">search</i></a></li>
+                    <li><a href="@Url.Action("PostAd","Home")">İlan Ver<i class="material-icons left">library_add</i></a></li>
+                    <li><a class="dropdown-button" href="#!" data-activates="profilDropdown" data-constrainwidth="false" data-beloworigin="true">Hesabım<i class="material-icons left">account_circle</i></a></li>
+                </ul>
+
+                <ul id="profilDropdown" class="dropdown-content">
+                    <li id="Profil"><a href="@Url.Action("Profil","Home")"><i class="material-icons nav-i-fix prefix">settings_applications</i><span>Profilim</span></a></li>
+                    <li id="Messages"><a href="@Url.Action("Messages","Home")"><i class="material-icons nav-i-fix prefix">question_answer</i><span>Mesajlarım</span></a></li>
+                    <li id="MyAdverts"><a href="@Url.Action("MyAdverts","Home")"><i class="material-icons nav-i-fix prefix">list</i><span>İlanlarım</span></a></li>
+                    <li id="PostAd"><a href="@Url.Action("PostAd","Home")"><i class="material-icons nav-i-fix prefix">library_add</i><span>Yeni İlan Ver</span></a></li>
+                    <li id="Favorites"><a href="@Url.Action("Favorites","Home")"><i class="material-icons nav-i-fix prefix">grade</i><span>Favorilerim</span></a></li>
+                    <li><a href="@Url.Action("Logout","Home")"><i class="material-icons nav-i-fix prefix">power_settings_new</i><span>Çıkış</span></a></li>
+                </ul>
+
+                <div id="nav-mobile" class="side-nav">
+                    <ul class="margin-top-10">
+                        <li id="Index_mobile"><a href="@Url.Action("Index","Home")"><i class="material-icons prefix">home</i>Anasayfa</a></li>
+                        <li id="About_mobile"><a href="@Url.Action("About","Home")"><i class="material-icons prefix">info_outline</i>Hakkımızda</a></li>
+                        <li id="Contact_mobile"><a href="@Url.Action("Contact","Home")"><i class="material-icons prefix">call</i>İletişim</a></li>
+                        <li id="Search_mobile"><a href="@Url.Action("AllAdverts","Home")"><i class="material-icons prefix">search</i>İlan Ara</a></li>
+                    </ul>
+                </div>
+
+                <div id="nav-mobile-user" class="side-nav">
+                    <ul class="margin-top-10">
+                        <li id="Profil_mobile"><a href="@Url.Action("Profil","Home")"><i class="material-icons prefix">settings</i>Profilim</a></li>
+                        <li id="Messages_mobile"><a href="@Url.Action("Messages","Home")"><i class="material-icons prefix">question_answer</i>Mesajlarım</a></li>
+                        <li id="MyAdverts_mobile"><a href="@Url.Action("MyAdverts","Home")"><i class="material-icons prefix">list</i>İlanlarım</a></li>
+                        <li id="PostAd_mobile"><a href="@Url.Action("PostAd","Home")"><i class="material-icons prefix">library_add</i>Yeni İlan Ver</a></li>
+                        <li id="Favorites_mobile"><a href="@Url.Action("Favorites","Home")"><i class="material-icons prefix">grade</i>Favorilerim</a></li>
+                        <li><a href="@Url.Action("Logout","Home")"><i class="material-icons prefix">power_settings_new</i>Çıkış</a></li>
+                    </ul>
+                </div>
+
+
+                <a href="#" id="right-sidebar" data-activates="nav-mobile-user" class="button-collapse right"><i class="material-icons">account_circle</i></a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <div class="section">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+    <footer class="page-footer orange">
+        <div class="container">
+            <div class="row">
+                <div class="col l2 s6">
+                    <h6><strong>Ev Arkadaşım</strong></h6>
+                    <ul>
+                        <li><a href="@Url.Action("About","Home")" class="grey-text text-lighten-3">Hakkımızda</a></li>
+                        <li><a href="@Url.Action("Contact","Home")" class="grey-text text-lighten-3">İletişim</a></li>
+                        <li><a href="#!" class="grey-text text-lighten-3">Öneriler</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright">
+            <div class="container">&copy; Copyright<a href=""> TuranJ Medya.</a> Tüm hakları saklıdır. &szlig;&szlig;</div>
+        </div>
+    </footer>
+</body>
+</html>
+
+<script>
+    $("#left-sidebar").sideNav({
+        menuWidth: 200,
+        edge: 'left',
+        closeOnClick: true,
+        draggable: true
+    });
+    $("#right-sidebar").sideNav({
+        menuWidth: 200,
+        edge: 'right',
+        closeOnClick: true,
+        draggable: true
+    });
+
+    $(document).ready(function () {
+        $("#@ViewBag.Title" + "_mobile").addClass('active');
+        $("#@ViewBag.Title").addClass('active');
+        $("#@ViewBag.Title" + "_partial").addClass('active');
+    });
+
+    $(window).resize(function () {
+        $("#left-sidebar").sideNav('hide');
+        $("#right-sidebar").sideNav('hide');
+        $(".modal").modal('close');
+    });
+
+    $('.dropdown-button').dropdown({
+        hover: false,
+        constrain_width: false,
+        alignment: 'left'
+    });
+</script>
+
+<style>
+    body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+    }
+
+    main {
+        flex: 1 0 auto;
+    }
+</style>

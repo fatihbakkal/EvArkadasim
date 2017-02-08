@@ -1,0 +1,136 @@
+﻿
+@{
+    ViewBag.Title = "Profil";
+    Layout = "~/Views/Shared/UserLayout.cshtml";
+}
+
+@model MaterialTemplate.Models.User
+
+<div class="row">
+    @Html.Partial("PartialLeftMenu")
+    <div class="col l9 s12">
+        <div class="card-panel teal lighten-5">
+            <h5 class="card-header purple-text">Hoş geldiniz, @Model.User_Name @Model.User_Surname</h5>
+            <div class="row">
+                <div class="col l12 m12 s12 center">
+                    <div class="col l12 m12 s12">
+                        <img src="~/Content/img/asd.jpg" style="max-width:100%;max-height:155px;" />
+                    </div>
+                    <div class="col l12 m12 s12" style="position:relative">
+                        <button class="btn-floating btn waves-effect waves-light red"><i class="material-icons">add</i></button>
+                    </div>
+                </div>
+            </div>
+            @using (Html.BeginForm("UpdateProfil", "Home", new { type = "Profil" }, FormMethod.Post))
+            {
+                <div class="row">
+                    @Html.HiddenFor(m => m.UserID)
+                    <div class="input-field col l6 m6 s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        @Html.TextBoxFor(m => m.User_Name)
+                        @Html.ValidationMessageFor(m => m.User_Name, "", new { @class = "errorImageForm" })
+                        <label for="User_Name">Adınız</label>
+                    </div>
+                    <div class="input-field col l6 m6 s12">
+                        <i class="material-icons prefix">account_circle</i>
+                        @Html.TextBoxFor(m => m.User_Surname)
+                        @Html.ValidationMessageFor(m => m.User_Surname, "", new { @class = "errorImageForm" })
+                        <label for="User_Surname">Soyadınız</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col l6 m6 s12">
+                        <i class="material-icons prefix">email</i>
+                        @Html.TextBoxFor(m => m.User_Mail, new { @class = "validate" })
+                        @Html.ValidationMessageFor(m => m.User_Mail, "", new { @class = "errorImageForm" })
+                        <label for="User_Mail">Mail Adresiniz</label>
+                    </div>
+                    <div class="input-field col l6 m6 s12">
+                        <i class="material-icons prefix">phone</i>
+                        @Html.TextBoxFor(m => m.User_Phone, new { type = "tel", maxlength = 11 })
+                        @Html.ValidationMessageFor(m => m.User_Phone, "", new { @class = "errorImageForm" })
+                        <label for="User_Phone">İletişim Numaranız</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col l6 m6 s12">
+                        <i class="material-icons prefix">class</i>
+                        @Html.TextBoxFor(m => m.User_Title)
+                        @Html.ValidationMessageFor(m => m.User_Title, "", new { @class = "errorImageForm" })
+                        <label for="User_Title">Ünvan</label>
+                    </div>
+                    <div class="input-field col l6 m6 s12">
+                        <i class="material-icons prefix">comment</i>
+                        @Html.TextAreaFor(m => m.User_About, new { @class = "materialize-textarea" })
+                        @Html.ValidationMessageFor(m => m.User_About, "", new { @class = "errorImageForm" })
+                        <label for="User_About">Hakkımda</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col l12 m12 s12">
+                        <button class="btn waves-effect waves-light right" type="submit" id="btnProfileUpdate">Güncelle</button>
+                    </div>
+                    @if (TempData["success"] != null)
+                    {
+                        <div class="input-field col l12 m12 s12">
+                            <div class="card green">
+                                <div class="card-content white-text">
+                                    @TempData["success"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            @using (Html.BeginForm("ChangePassword", "Home", FormMethod.Post))
+            {
+                <div class="row">
+                    @Html.HiddenFor(m => m.UserID)
+                    <div class="col l12 m12 s12">
+                        <h5 class="card-header purple-text">Şifre Değiştir</h5>
+                    </div>
+                    <div class="input-field col l4 m4 offset-m3 s12">
+                        <i class="material-icons prefix">lock</i>
+                        @Html.TextBox("oldPass", null, new { type = "password" })
+                        <label for="oldPass">Mevcut Şifre</label>
+                    </div>
+                    <div class="input-field col l4 m4 offset-m3 s12">
+                        <i class="material-icons prefix">lock</i>
+                        @Html.TextBox("newPass", null, new { type = "password" })
+                        <label for="newPass">Yeni Şifre</label>
+                    </div>
+                    <div class="input-field col l4 m4 offset-m3 s12">
+                        <i class="material-icons prefix">lock</i>
+                        @Html.TextBox("newPassR", null, new { type = "password" })
+                        <label for="newPassR">Yeni Şifre (Tekrar)</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col l12 m12 s12">
+                        <button class="btn waves-effect waves-light right" type="submit" id="btnUpdatePw">Kaydet</button>
+                    </div>
+                    @if (TempData["pwSuccess"] != null)
+                    {
+                        <div class="input-field col l12 m12 s12">
+                            <div class="card green">
+                                <div class="card-content white-text">
+                                    @TempData["pwSuccess"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else if (TempData["pwError"] != null)
+                    {
+                        <div class="input-field col l12 m12 s12">
+                            <div class="card red">
+                                <div class="card-content white-text">
+                                    @TempData["pwError"]
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

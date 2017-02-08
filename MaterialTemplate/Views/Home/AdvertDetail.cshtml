@@ -1,0 +1,255 @@
+﻿
+@{
+    ViewBag.Title = "AdvertDetail";
+    string layout = "";
+    if (Session["User"] != null) { layout = "~/Views/Shared/UserLayout.cshtml"; }
+    else { layout = "~/Views/Shared/Layout.cshtml"; }
+
+    Layout = layout;
+
+    var asd = ViewBag.Properties;
+}
+<script src="http://maps.google.com/maps/api/js?key=AIzaSyByzzYxrIn8wFVg5aOulE0Va22c8PkSRGA&libraries=places&region=tr&language=tr"></script>
+
+@model MaterialTemplate.Models.Advert
+
+<div class="row">
+    <div class="col s12 m12 l12">
+        <div class="card-panel teal lighten-5">
+            <div class="row row-bordered">
+                <div class="col l12 s12 m12">
+                    <span class="advert-header">@Model.Advert_Title</span>
+                </div>
+                <div class="col s12">
+                    <span class="deep-purple-text advert-date">@Model.DT_CREATED.ToString("dd MMMM yyyy")</span>
+                    <span class="deep-orange-text advert-price">@Model.Advert_Price ₺</span>
+                </div>
+                <div class="col s12">
+                    <a href="#!" class="green-text right">
+                        <i class="tiny material-icons prefix">label</i>
+                        @foreach (var item in ViewBag.Properties)
+                        {
+                            if (item.PropertyID == Model.Advert_Category)
+                            {<span>@item.Property_Title</span>}
+                        }
+                    </a>
+                </div>
+            </div>
+            <div class="row row-bordered">
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header active"><i class="material-icons">info</i><span class="label-fix">Detaylar</span></div>
+                        <div class="collapsible-body">
+                            <div class="row mb-10" style="margin:20px;">
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">İlan ID : </span>
+                                    <span class="text-fix">@Model.AdvertID</span>
+                                </div>
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">Fiyat : </span>
+                                    <span class="text-fix">@Model.Advert_Price ₺</span>
+                                </div>
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">Alan(m<sup>2</sup>) : </span>
+                                    <span class="text-fix">@Model.Advert_Field</span>
+                                </div>
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">Yatak Odası : </span>
+                                    <span class="text-fix">@Model.Advert_Bed</span>
+                                </div>
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">Banyo : </span>
+                                    <span class="text-fix">@Model.Advert_Bath</span>
+                                </div>
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">Isınma Türü : </span>
+                                    @if (Model.Advert_HeatingType != null)
+                                    {
+                                        foreach (var item in ViewBag.Properties)
+                                        {
+                                            if (item.PropertyID == Model.Advert_HeatingType)
+                                            {<span>@item.Property_Title</span>}
+                                        }
+                                    }
+                                </div>
+                                <div class="col l12 s12 mb-10">
+                                    <span class="label-fix">Ekstra Açıklama : </span>
+                                    <span class="text-fix">@Model.Advert_ExtraInformation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header active"><i class="material-icons">room</i><span class="label-fix">Konum</span></div>
+                        <div class="collapsible-body">
+                            <div class="row" style="margin:20px;">
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">Adres : </span>
+                                    <span class="text-fix">@Model.Advert_Address</span>
+                                </div>
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">İl : </span>
+                                    <span>@Model.Province.Province_Name</span>
+                                </div>
+                                <div class="col l4 s12 mb-10">
+                                    <span class="label-fix">İlçe : </span>
+                                    <span>@Model.District.District_Name</span>
+                                </div>
+                                @if (Model.Advert_Longitude != null && Model.Advert_Latitude != null)
+                                {
+                                    <div class="col l12 s12 mb-10">
+                                        <div id="google-map" data-latitude="@Model.Advert_Latitude" data-longitude="@Model.Advert_Longitude"></div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header active"><i class="material-icons">list</i><span class="label-fix">Özellikler</span></div>
+                        <div class="collapsible-body">
+                            <div class="row" style="margin:20px;">
+                                @foreach (var item in Model.AdvertFeature)
+                                {
+                                    <div class="col l4 s12">
+                                        <span class="label-fix"><i class="material-icons prefix">done</i></span>
+                                        <span class="text-fix">@item.Feature.Feature_Title</span>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="collapsible" data-collapsible="expandable">
+                    <li>
+                        <div class="collapsible-header active"><i class="material-icons">account_circle</i><span class="label-fix">İlan Sahibi</span></div>
+                        <div class="collapsible-body">
+                            <div class="row" style="margin:20px;">
+                                <div class="col l2 s12 left">
+                                    <img src="~/Content/img/empty-profile.png" class="responsive-img" />
+                                </div>
+                                <div class="col l6 s12 left">
+                                    <h5>@Model.User.User_Name @Model.User.User_Surname</h5>
+                                    @if (Model.User.User_Phone != null)
+                                    {
+                                        <i class="material-icons prefix">phone</i>
+                                        <span class="text-fix">@Model.User.User_Phone</span>
+                                    }
+                                    <br />
+                                    <i class="material-icons prefix">email</i>
+                                    <span class="text-fix">@Model.User.User_Mail</span>
+                                </div>
+                                <div class="col l4 s12">
+                                    <a href="@Url.Action("Messages", "Home",new { advertId = Model.AdvertID })" class="btn waves-effect waves-light right">Mesaj Gönder</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #google-map {
+        height: 300px;
+        width: 100%;
+        background-color: #eee;
+    }
+</style>
+
+<script>
+    var latitude = $('#google-map').data('latitude');
+    var longitude = $('#google-map').data('longitude');
+    function initialize_map() {
+        var myLatlng = new google.maps.LatLng(latitude, longitude);
+        var mapOptions = {
+            zoom: 15,
+            scrollwheel: true,
+            disableDefaultUI: true,
+            center: myLatlng,
+            panControl: true,
+            panControlOptions: {
+                position: google.maps.ControlPosition.TOP_RIGHT
+            },
+            zoomControl: true,
+            zoomControlOptions: {
+                style: google.maps.ZoomControlStyle.LARGE,
+                position: google.maps.ControlPosition.TOP_left
+            },
+            streetViewControl: true,
+            streetViewControlOptions: {
+                position: google.maps.ControlPosition.LEFT_TOP
+            }
+        };
+
+        var contentString = "<div class='view-link'> <a target='_blank' jstcache='6' href='https://www.google.com.tr/maps/search/"+latitude+","+longitude+"'> <span>Google Haritalar'da görüntüleyin</span> </a> </div>";
+
+        var infowindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        var map = new google.maps.Map(document.getElementById('google-map'), mapOptions);
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map
+        });
+        google.maps.event.addListener(marker, 'click', function () {
+            infowindow.open(map, marker);
+        });
+
+        function CenterControl(controlDiv, map) {
+
+            // Set CSS for the control border.
+            var controlUI = document.createElement('div');
+            controlUI.style.backgroundColor = '#fff';
+            controlUI.style.border = '2px solid #fff';
+            controlUI.style.borderRadius = '4px';
+            controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+            controlUI.style.cursor = 'pointer';
+            controlUI.style.marginTop = '10px';
+            controlUI.style.marginRight = '10px';
+            controlUI.style.textAlign = 'center';
+            controlUI.title = 'İlanın konumuna gitmek için tıklayınız.';
+            controlDiv.appendChild(controlUI);
+
+            // Set CSS for the control interior.
+            var controlText = document.createElement('div');
+            controlText.style.color = 'rgb(255,0,0)';
+            controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+            controlText.style.fontSize = '16px';
+            controlText.style.lineHeight = '38px';
+            controlText.innerHTML = '<span><i class="material-icons">room</i></span>';
+            controlUI.appendChild(controlText);
+
+            // Setup the click event listeners: simply set the map to Chicago.
+            controlUI.addEventListener('click', function () {
+                map.setCenter(myLatlng);
+            });
+
+        }
+
+        var centerControlDiv = document.createElement('div');
+        var centerControl = new CenterControl(centerControlDiv, map);
+
+        centerControlDiv.index = 1;
+        map.controls[google.maps.ControlPosition.TOP_RIGHT].push(centerControlDiv);
+
+    }
+    initialize_map();
+    $('#map').on('hidden.bs.collapse', function () {
+        initialize_map();
+    })
+    $('#map').on('shown.bs.collapse', function () {
+        initialize_map();
+    })
+
+    google.maps.event.addDomListener(window, 'resize', function () {
+
+    });
+</script>
