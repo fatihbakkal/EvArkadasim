@@ -88,23 +88,41 @@ namespace MaterialTemplate.Controllers
             return View(model);
         }
 
-        public ActionResult Messages(int advertId)
+        public ActionResult Messages(int? advertId)
         {
-            var userId = CommonFunctions.GetUserId();
-            var model = db.Advert.Where(x => x.AdvertID == advertId).FirstOrDefault();
+            //var userId = CommonFunctions.GetUserId();
+            //var model = db.Advert.Where(x => x.AdvertID == advertId).FirstOrDefault();
 
-            Message msgModel = new Message();
-            msgModel.MessageReceiver = model.UserID;
-            msgModel.MessageSender = userId;
-            msgModel.UserReceiver = db.User.Where(x => x.UserID == model.UserID).FirstOrDefault();
-            msgModel.MessageSubject = model.Advert_Title + "başlıklı ilan hakkında";
+            //Message msgModel = new Message();
+            //msgModel.MessageReceiver = model.UserID;
+            //msgModel.MessageSender = userId;
+            //msgModel.UserReceiver = db.User.Where(x => x.UserID == model.UserID).FirstOrDefault();
+            //msgModel.MessageSubject = model.Advert_Title + "başlıklı ilan hakkında";
 
-
-            return View(msgModel);
+            return View();
         }
 
-        public ActionResult SendMessage()
+        public ActionResult SendMessage(FormCollection frm)
         {
+            var sndUserId = CommonFunctions.GetUserId();
+
+            var rcvUserName = frm["RcvUsername"];
+
+            var rcvUser = db.User.Where(x => x.User_Username == rcvUserName).FirstOrDefault();
+            var sndUser = db.User.Where(x => x.UserID == sndUserId).FirstOrDefault();
+
+            Message msgObj = new Message();
+
+            //msgObj.MessageReceiver = rcvUser.UserID;
+            //msgObj.UserReceiver = rcvUser;
+            //msgObj.MessageSender = sndUserId;
+            //msgObj.UserSender = sndUser;
+            //msgObj.MessageContent = frm["MessageContent"];
+            //msgObj.MessageSubject = frm["MessageSubject"];
+
+            db.Message.Add(msgObj);
+            db.SaveChanges();
+
             return View();
         }
 

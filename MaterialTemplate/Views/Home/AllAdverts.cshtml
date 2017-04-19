@@ -90,53 +90,53 @@
 <div class="row">
     @foreach (var item in Model.SearchResults)
     {
-    <div class="col s12 m6 l4">
-        <div class="card teal lighten-5">
-            <div class="card-content" style="height:250px;">
-                <h5 class="blue-text text-darken-4 text-accent-3 line-clamp-2" style="font-size:17px;font-weight:bold;">
-                    <a href="@Url.Action("AdvertDetail","Home",new { advertId = item.AdvertID })">@item.Advert_Title</a>
-                </h5>
-                <hr />
-                <table>
-                    <tr>
-                        <td>
-                            <strong><span>@item.Province.Province_Name / @item.District.District_Name</span></strong>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            @if (item.Advert_Bed != null)
+        <div class="col s12 m6 l4">
+            <div class="card teal lighten-5">
+                <div class="card-content" style="height:250px;">
+                    <h5 class="blue-text text-darken-4 text-accent-3 line-clamp-2" style="font-size:17px;font-weight:bold;">
+                        <a href="@Url.Action("AdvertDetail","Home",new { advertId = item.AdvertID })">@item.Advert_Title</a>
+                    </h5>
+                    <hr />
+                    <table>
+                        <tr>
+                            <td>
+                                <strong><span>@item.Province.Province_Name / @item.District.District_Name</span></strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                @if (item.Advert_Bed != null)
                                 {
-                            <img src="~/Content/img/icon_bed1.png" />
-                            <span>@item.Advert_Bed</span>
+                                    <img src="~/Content/img/icon_bed1.png" />
+                                    <span>@item.Advert_Bed</span>
                                 }
 
-                            @if (item.Advert_Bath != null)
+                                @if (item.Advert_Bath != null)
                                 {
-                            <img src="~/Content/img/icon_bath1.png" />
-                            <span>@item.Advert_Bath</span>
+                                    <img src="~/Content/img/icon_bath1.png" />
+                                    <span>@item.Advert_Bath</span>
                                 }
 
-                            @if (item.Advert_Field != null)
+                                @if (item.Advert_Field != null)
                                 {
-                            <img src="~/Content/img/icon-size1.png" />
-                            <span>@item.Advert_Field m<sup>2</sup></span>
+                                    <img src="~/Content/img/icon-size1.png" />
+                                    <span>@item.Advert_Field m<sup>2</sup></span>
                                 }
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="line-clamp-4">@item.Advert_Describe</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="card-action ca-fix">
-                <span class="list-price"><strong>@item.Advert_Price ₺</strong></span>
-                <a class="deep-orange-text detail" href="@Url.Action("AdvertDetail","Home",new { advertId=item.AdvertID })">Detay</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="line-clamp-4">@item.Advert_Describe</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="card-action ca-fix">
+                    <span class="list-price"><strong>@item.Advert_Price ₺</strong></span>
+                    <a class="deep-orange-text detail" href="@Url.Action("AdvertDetail","Home",new { advertId=item.AdvertID })">Detay</a>
+                </div>
             </div>
         </div>
-    </div>
     }
 </div>
 <div class="row">
@@ -149,7 +149,7 @@
                { "DistrictID", Model.DistrictID },
                { "CategoryID", Model.CategoryID },
                { "MaxPrice", Model.MaxPrice},
-               {"MinPrice", Model.MinPrice }
+               { "MinPrice", Model.MinPrice }
           }),
           PagedListRenderOptions.PageNumbersOnly)
     </div>
